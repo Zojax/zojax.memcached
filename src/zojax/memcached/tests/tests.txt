@@ -1,0 +1,55 @@
+=========
+Memcached
+=========
+
+  >>> from zope import component, interface
+  >>> from zope.interface.verify import verifyObject
+  >>> from zope.app.component.hooks import getSite, setSite
+  >>> from zope.testbrowser.testing import Browser
+  >>> from lovely.memcached.interfaces import IMemcachedClient
+
+  >>> from zojax.memcached import interfaces
+
+  >>> root = getRootFolder()
+  >>> setSite(root)
+  >>> sm = root.getSiteManager()
+
+  >>> configlet = component.getUtility(interfaces.IMemcachedConfiglet)
+
+  >>> print sm.queryUtility(IMemcachedClient)
+  None
+
+  >>> configlet.enabled = True
+  >>> client = sm.queryUtility(IMemcachedClient)
+  >>> print client
+  <lovely.memcached.utility.MemcachedClient ...>
+  
+  >>> IMemcachedClient(configlet) is client
+  True
+
+  >>> configlet.enabled = False
+  >>> print sm.queryUtility(IMemcachedClient)
+  None
+
+  >>> actor = Browser()
+  >>> actor.addHeader("Authorization", "Basic mgr:mgrpw")
+  >>> actor.handleErrors = False
+
+  >>> actor.open('http://localhost/settings/')
+  >>> actor.getLink('Memcached').click()
+  >>> actor.getControl(name="configlet.widgets.enabled:list").value = ['true']
+  >>> actor.getControl('Save').click()
+
+  >>> print sm.queryUtility(IMemcachedClient)
+  <lovely.memcached.utility.MemcachedClient ...>
+
+  >>> actor.getControl(name="configlet.widgets.enabled:list").value = ['false']
+  >>> actor.getControl('Save').click()
+
+  >>> print sm.queryUtility(IMemcachedClient)
+  None
+
+cleanup
+
+  >>> sync()
+  >>> setSite(None)

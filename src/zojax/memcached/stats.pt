@@ -1,0 +1,25 @@
+<h2 i18n:translate="">Memcached statistics</h2>
+
+<div>
+  
+  <div class="z-table-container" tal:condition="view/stats">
+    <table class="z-table">
+      <thead>
+        <th>&nbsp;</th>
+        <th tal:repeat="colName view/colNames" tal:content="colName"/>
+      </thead>
+      <tbody>
+        <tr tal:repeat="row view/rows"
+	    tal:attributes="class python:repeat['row'].odd() and 'even'or'odd'">
+          <th tal:content="row" />
+          <td tal:repeat="colName view/colNames"
+	      tal:content="python:view.colData[repeat['colName'].index()][row]"/>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p tal:condition="not:view/stats">
+    There are no statistics for memcached client.
+  </p>
+</div>
