@@ -1,0 +1,41 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+  i18n_domain="zojax.memcached">
+
+  <zojax:configlet
+     title="Memcached"
+     name="system.memcached"
+     schema=".interfaces.IMemcachedConfiglet"
+     class=".configlet.MemcachedConfiglet"
+     description="This configlet allow setup and configure memcached client."
+     permission="zojax.Configure" />
+
+  <adapter factory=".configlet.memcachedClient" />
+
+  <!-- configlet views -->
+  <zojax:pagelet
+     name="index.html"
+     for=".interfaces.IMemcachedConfiglet"
+     class="zojax.controlpanel.browser.wizard.ConfigletEditWizard"
+     permission="zojax.Configure" />
+
+  <zojax:pagelet
+     name="configlet"
+     type="wizard.step"
+     title="Configure"
+     for=".interfaces.IMemcachedConfiglet
+	  zojax.controlpanel.browser.interfaces.IConfigletEditWizard"
+     class=".edit.EditConfigletForm"
+     weight="100" />
+
+  <zojax:pagelet
+     name="stats"
+     type="wizard.step"
+     title="Statistics"
+     for=".interfaces.IMemcachedConfiglet
+	  zojax.controlpanel.browser.interfaces.IConfigletEditWizard"
+    class=".edit.Stats"
+     weight="200" />
+
+</configure>
