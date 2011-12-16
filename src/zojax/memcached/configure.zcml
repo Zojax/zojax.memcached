@@ -1,7 +1,10 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:zojax="http://namespaces.zope.org/zojax"
-  i18n_domain="zojax.memcached">
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   i18n_domain="zojax.memcached">
+
+  <i18n:registerTranslations directory="locales" />
 
   <zojax:configlet
      title="Memcached"
